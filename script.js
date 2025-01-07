@@ -1,27 +1,70 @@
-// Remplacer avec ton propre access token
-const access_token = 'AQCVm5E-wIgq-1sVl7IHfTCE2ntyTHERLPNH78bJ8Nq19K2IT273lrNH1bu9ucNIkhr8SRgUDbvvnzegEVmAIcCzPbxHJ6kSuJBcaKEjuTwgHsR3_MnDOi1oFIzg9Z--7VGxwpjl6RbQpEvugPy0CE9nfrdIKrY2VD4fdRoiPFw0vUEMFGm6chUzbohi9UBRJ2ARob5_WWwEhXMpAQZHRTvwlIz9W6HxbzTxbqr607Pa1184WmNoYhAcltERZ6VcPG8P8401-zt72cyw';
+// Variables globales
+const playPauseButton = document.getElementById('play-pause');
+const vinyl = document.getElementById('vinyl');
+const connectSpotifyButton = document.getElementById('connect-spotify');
+let isPlaying = false;
+let accessToken = null;
 
-// Récupérer la musique en cours de lecture
-fetch('https://api.spotify.com/v1/me/player/currently-playing', {
-    method: 'GET',
-    headers: {
-        'Authorization': `Bearer ${access_token}`,
-        'Content-Type': 'application/json'
-    }
-})
-.then(response => response.json())
-.then(data => {
-    console.log(data); // Affiche les données pour débogage
-
-    if (data && data.item) {
-        const albumCover = data.item.album.images[0].url;
-        const albumTitle = data.item.name;
-        
-        // Afficher l'album et le titre
-        document.getElementById('album-cover').src = albumCover;
-        document.getElementById('album-title').textContent = albumTitle;
-    }
-})
-.catch(error => {
-    console.error('Erreur:', error);
+// Bouton lecture/pause
+playPauseButton.addEventListener('click', () => {
+  if (isPlaying) {
+    vinyl.style.animationPlayState = 'paused';
+    playPauseButton.textContent = '⏯️'; // Bouton Play
+    isPlaying = false;
+  } else {
+    vinyl.style.animationPlayState = 'running';
+    playPauseButton.textContent = '⏸️'; // Bouton Pause
+    isPlaying = true;
+  }
 });
+
+// Connexion à Spotify
+connectSpotifyButton.addEventListener('click', () => {
+  const clientId = 'TON_CLIENT_ID_SPOTIFY'; // Remplace par ton client ID Spotify
+  const redirectUri = 'https://ton-utilisateur.github.io/nom-du-depot/'; // Lien vers ton site GitHub Pages
+  const scope = 'user-read-playback-state';
+
+  // Redirige vers Spotify pour l'authentification
+  window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}&scope=${scope}`;
+});
+
+// Récupérer le token depuis l'URL (après redirection)
+window.onload = () => {
+  const hash = window.location.hash;
+  if (hash) {
+    const params = new URLSearchParams(hash.substring(1));
+    accessToken = params.get('access_token');
+    if (accessToken) {
+      fetchSpotifyData();
+    }
+  }
+};
+
+// Fonction pour récupérer les données Spotify
+async function fetchSpotifyData() {
+  if (!accessToken) return;
+
+  const response = await fetch('https://api.spotify.com/v1/me/player', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`
+    }
+  });
+
+  if (response.status === 200) {
+    const data = await response.json();
+    updatePlayer(data.item);
+  } else {
+    console.error('Erreur lors de la récupération des données Spotify.');
+  }
+}
+
+// Mise à jour des informations de la musique
+function updatePlayer(data) {
+  const albumCover = document.getElementById('album-cover');
+  const songTitle = document.getElementById('song-title');
+  const artistName = document.getElementById('artist-name');
+
+  albumCover.src = data.album.images[0].url; // URL de la pochette
+  songTitle.textContent = data.name; // Nom de la chanson
+  artistName.textContent = data.artists.map(artist => artist.name).join(', '); // Artistes
+}

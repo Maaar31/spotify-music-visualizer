@@ -1,49 +1,104 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #282828;
+    background-color: #121212;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
-}
-
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#album-info {
+  }
+  
+  .player {
     text-align: center;
-}
-
-#album-cover {
     width: 300px;
-    height: 300px;
-    border-radius: 15px;
-    margin-bottom: 20px;
-}
-
-#album-title {
-    font-size: 1.5em;
-    margin-top: 10px;
-}
-
-#vinyl-container {
-    position: relative;
-    width: 200px;
-    height: 200px;
-}
-
-#vinyl {
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .album img {
     width: 100%;
-    height: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .vinyl {
+    margin: 20px auto;
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .vinyl img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
     animation: spin 5s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+    animation-play-state: paused;
+  }
+  
+  .song-info {
+    margin: 20px 0;
+  }
+  
+  .song-info h2 {
+    font-size: 18px;
+    margin: 10px 0;
+  }
+  
+  .song-info p {
+    font-size: 14px;
+    color: #b3b3b3;
+  }
+  
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .controls button {
+    background-color: #1db954;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .controls button:hover {
+    background-color: #1ed760;
+  }
+  
+  button#connect-spotify {
+    margin-top: 20px;
+    background-color: #1e1e1e;
+    border: 1px solid #1db954;
+    padding: 10px;
+    border-radius: 5px;
+    color: #1db954;
+    cursor: pointer;
+  }
+  
+  button#connect-spotify:hover {
+    background-color: #1db954;
+    color: white;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  

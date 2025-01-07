@@ -1,22 +1,30 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spotify Visualiser</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD Player</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div id="album-info">
-            <img id="album-cover" src="" alt="Album Cover">
-            <div id="album-title"></div>
-        </div>
-        <div id="vinyl-container">
-            <img id="vinyl" src="vinyl.png" alt="Vinyl" class="spinning">
-        </div>
+  <div class="player">
+    <div class="album">
+      <img id="album-cover" src="default-album.jpg" alt="Album Cover">
     </div>
-
-    <script src="script.js"></script>
+    <div class="vinyl">
+      <img id="vinyl" src="vinyl.png" alt="Vinyl Record">
+    </div>
+    <div class="song-info">
+      <h2 id="song-title">Titre de la chanson</h2>
+      <p id="artist-name">Nom de l'artiste</p>
+    </div>
+    <div class="controls">
+      <button id="prev">⏮️</button>
+      <button id="play-pause">⏯️</button>
+      <button id="next">⏭️</button>
+    </div>
+    <button id="connect-spotify">🔗 Connect to Spotify</button>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
