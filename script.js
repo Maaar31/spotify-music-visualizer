@@ -20,8 +20,8 @@ playPauseButton.addEventListener('click', () => {
 
 // Connexion à Spotify
 connectSpotifyButton.addEventListener('click', () => {
-  const clientId = 'TON_CLIENT_ID_SPOTIFY'; // Remplace par ton client ID Spotify
-  const redirectUri = 'https://ton-utilisateur.github.io/nom-du-depot/'; // Lien vers ton site GitHub Pages
+  const clientId = 'c3b94a096f0e4ca392978b6ee67d002c'; // Remplace par ton client ID Spotify
+  const redirectUri = 'https://maaar31.github.io/spotify-music-visualizer/'; // Lien vers ton site GitHub Pages
   const scope = 'user-read-playback-state';
 
   // Redirige vers Spotify pour l'authentification
