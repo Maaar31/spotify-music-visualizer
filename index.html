@@ -16,8 +16,14 @@
       <div id="vinyl"></div>
       <h2 id="track-name">Aucune musique en cours</h2>
       <h3 id="artist-name">Artiste inconnu</h3>
+
+      <!-- Barre de progression -->
+      <div id="progress-container" style="display: none;">
+        <input type="range" id="progress-bar" value="0" min="0" max="100">
+      </div>
     </div>
 
+    <!-- Boutons -->
     <button id="connect-btn" onclick="redirectToSpotify()">Se connecter à Spotify</button>
     <button id="refresh-btn" onclick="handleTokenExpiration()">Reconnecter à Spotify</button>
   </div>

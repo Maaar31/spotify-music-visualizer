@@ -1,81 +1,98 @@
-// Redirection vers Spotify pour la connexion
+let isConnected = false; // État de connexion
+let isPlaying = false; // État de lecture
+
+// Exemple : simule une connexion à Spotify
+function handleToken(token) {
+  if (token) {
+    isConnected = true; // Utilisateur connecté
+    updateUI();
+    fetchCurrentTrack(); // Récupère les informations du morceau en cours
+  } else {
+    isConnected = false;
+    updateUI();
+  }
+}
+
+// Met à jour l'interface utilisateur
+function updateUI() {
+  // Affiche ou masque les boutons de connexion
+  document.getElementById("connect-btn").style.display = isConnected ? "none" : "block";
+  document.getElementById("refresh-btn").style.display = isConnected ? "none" : "block";
+
+  // Affiche ou masque la barre de lecture
+  document.getElementById("progress-container").style.display = isPlaying ? "block" : "none";
+}
+
+// Récupère les informations du morceau en cours
+function fetchCurrentTrack() {
+  fetch("https://api.spotify.com/v1/me/player/currently-playing", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data && data.is_playing) {
+        isPlaying = true;
+
+        // Mets à jour les informations du morceau
+        document.getElementById("track-name").textContent = data.item.name;
+        document.getElementById("artist-name").textContent = data.item.artists.map(artist => artist.name).join(", ");
+        document.getElementById("album-art").src = data.item.album.images[0].url;
+
+        // Mets à jour la barre de progression
+        updateProgressBar(data.progress_ms, data.item.duration_ms);
+      } else {
+        isPlaying = false;
+      }
+      updateUI();
+    })
+    .catch(error => {
+      console.error("Erreur lors de la récupération des informations :", error);
+    });
+}
+
+// Met à jour la barre de progression
+function updateProgressBar(current, total) {
+  const progressBar = document.getElementById("progress-bar");
+  progressBar.value = (current / total) * 100;
+
+  // Mets à jour la progression en temps réel
+  setTimeout(() => {
+    if (isPlaying) {
+      fetchCurrentTrack(); // Actualise les données
+    }
+  }, 1000); // Actualise toutes les secondes
+}
+
+// Redirection vers Spotify pour se connecter
 function redirectToSpotify() {
-  const clientId = 'c3b94a096f0e4ca392978b6ee67d002c'; // Remplace par ton client_id
-  const redirectUri = 'https://maaar31.github.io/spotify-music-visualizer/'; // Ton URI de redirection
-  const scope = 'user-read-playback-state';
-  const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}`;
+  const clientId = "c3b94a096f0e4ca392978b6ee67d002c";
+  const redirectUri = "https://maaar31.github.io/spotify-music-visualizer/";
+  const scope = "user-read-playback-state";
+  const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
 
   window.location.href = authUrl;
 }
 
-// Récupérer le token de l'URL
-function getAccessTokenFromUrl() {
-  const hash = window.location.hash;
-  if (!hash) return null;
-
-  const params = new URLSearchParams(hash.substring(1));
-  return params.get('access_token');
-}
-
-// Vérifier si l'utilisateur est connecté
-function checkConnection() {
-  const token = localStorage.getItem('spotifyAccessToken');
-  if (token) {
-    document.getElementById('status').innerText = "Connecté à Spotify";
-    getPlaybackState(); // Charger les infos de lecture
-  } else {
-    document.getElementById('status').innerText = "Non connecté. Veuillez vous connecter à Spotify.";
-  }
-}
-
-// Stocker le token après redirection
-const token = getAccessTokenFromUrl();
-if (token) {
-  localStorage.setItem('spotifyAccessToken', token);
-  console.log('Access token récupéré et stocké:', token);
-  window.location.hash = ''; // Nettoyer l'URL
-}
-
-// Obtenir l'état de lecture actuel
-async function getPlaybackState() {
-  const token = localStorage.getItem('spotifyAccessToken');
-  if (!token) {
-    console.error("Aucun token disponible !");
-    return;
-  }
-
-  try {
-    const response = await fetch('https://api.spotify.com/v1/me/player', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log('Données de lecture :', data);
-
-      const albumArt = data.item.album.images[0].url;
-      const trackName = data.item.name;
-      const artistName = data.item.artists.map(artist => artist.name).join(', ');
-
-      document.getElementById('album-art').src = albumArt;
-      document.getElementById('track-name').innerText = trackName;
-      document.getElementById('artist-name').innerText = artistName;
-    } else if (response.status === 401) {
-      handleTokenExpiration(); // Gérer l'expiration du token
-    }
-  } catch (error) {
-    console.error("Erreur lors de l'obtention de l'état de lecture :", error);
-  }
-}
-
-// Gérer l'expiration du token
+// Gestion du token et initialisation
 function handleTokenExpiration() {
-  console.warn('Token expiré ou invalide. Redirection vers Spotify.');
-  localStorage.removeItem('spotifyAccessToken');
-  redirectToSpotify();
+  const token = localStorage.getItem("access_token");
+  handleToken(token); // Vérifie si le token est valide
 }
 
-// Vérifier la connexion lors du chargement de la page
-checkConnection();
+// Initialisation au chargement de la page
+window.onload = function () {
+  const hash = window.location.hash;
+  if (hash) {
+    const params = new URLSearchParams(hash.substring(1));
+    const token = params.get("access_token");
+    if (token) {
+      localStorage.setItem("access_token", token);
+      handleToken(token);
+    }
+  } else {
+    handleToken(localStorage.getItem("access_token"));
+  }
+};
