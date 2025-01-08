@@ -1,97 +1,96 @@
-/* Design simple et épuré */
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
   margin: 0;
   padding: 0;
-  background-color: #2b2b2b; /* Couleur sombre */
-  color: #ffffff; /* Texte clair */
-}
-
-.container {
-  padding: 20px;
-}
-
-h1 {
-  color: #1db954; /* Couleur verte Spotify */
-}
-
-.player {
-  margin-top: 30px;
-}
-
-#vinyl-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background: #121212;
+  color: #fff;
+}
+
+.container {
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+#status {
+  margin-bottom: 20px;
+}
+
+.player {
+  position: relative;
+  display: inline-block;
+}
+
+.album-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.album-container:hover {
+  transform: scale(1.05);
 }
 
 #album-art {
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  margin: 20px auto;
-  animation: spin 5s linear infinite;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-#track-name, #artist-name {
+.vinyl {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  background: url('vinyl.png') no-repeat center center;
+  background-size: cover;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) translateY(100%);
+  transition: transform 0.5s ease;
+}
+
+.album-container.active #album-art {
+  transform: scale(1.2);
+  transition: transform 0.5s ease;
+}
+
+.album-container.active .vinyl {
+  transform: translate(-50%, -50%) translateY(50%);
+}
+
+h2, h3 {
   margin: 10px 0;
 }
 
 button {
-  background-color: #1db954;
-  border: none;
-  padding: 10px 20px;
-  color: #ffffff;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 5px;
   margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  background-color: #1db954;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #1ed760;
+  background-color: #17a44f;
 }
 
-/* Barre de progression */
-#progress-container {
+#playback-status {
   margin-top: 20px;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-#progress-bar {
-  width: 100%;
-  appearance: none;
-  height: 10px;
-  background: #555;
-  border-radius: 5px;
-  outline: none;
-}
-
-#progress-bar::-webkit-slider-thumb {
-  appearance: none;
-  width: 15px;
-  height: 15px;
-  background: #1db954; /* Couleur Spotify */
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-/* Animation du vinyle */
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Cacher les boutons lorsqu'ils ne sont pas nécessaires */
-#buttons {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
+  font-size: 14px;
 }

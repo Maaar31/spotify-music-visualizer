@@ -12,23 +12,19 @@
     <p id="status">Chargement...</p>
 
     <div class="player">
-      <div id="vinyl-wrapper">
+      <div class="album-container" onclick="toggleVinyl()">
         <img id="album-art" src="vinyl.png" alt="Album Art">
-        <div id="vinyl"></div>
+        <div id="vinyl" class="vinyl"></div>
       </div>
+
       <h2 id="track-name">Aucune musique en cours</h2>
       <h3 id="artist-name">Artiste inconnu</h3>
-
-      <!-- Barre de progression -->
-      <div id="progress-container" style="display: none;">
-        <input type="range" id="progress-bar" value="0" min="0" max="100">
-      </div>
     </div>
 
-    <!-- Boutons -->
-    <div id="buttons">
-      <button id="connect-btn" onclick="redirectToSpotify()">Se connecter à Spotify</button>
-      <button id="refresh-btn" onclick="handleTokenExpiration()">Reconnecter à Spotify</button>
+    <button id="connect-btn" onclick="redirectToSpotify()">Se connecter à Spotify</button>
+    <button id="refresh-btn" onclick="handleTokenExpiration()">Reconnecter à Spotify</button>
+    <div id="playback-status" style="display: none;">
+      <p>Lecture : <span id="playback-info">En pause</span></p>
     </div>
   </div>
 
