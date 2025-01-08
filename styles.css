@@ -1,11 +1,11 @@
-/* Style de base */
+/* Design simple et épuré */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
-  background-color: #121212;
-  color: #ffffff;
+  background-color: #2b2b2b; /* Couleur sombre */
+  color: #ffffff; /* Texte clair */
 }
 
 .container {
@@ -13,18 +13,25 @@ body {
 }
 
 h1 {
-  color: #1db954;
+  color: #1db954; /* Couleur verte Spotify */
 }
 
 .player {
-  margin-top: 20px;
+  margin-top: 30px;
+}
+
+#vinyl-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #album-art {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
-  margin-bottom: 20px;
+  margin: 20px auto;
+  animation: spin 5s linear infinite;
 }
 
 #track-name, #artist-name {
@@ -58,7 +65,7 @@ button:hover {
   width: 100%;
   appearance: none;
   height: 10px;
-  background: #ddd;
+  background: #555;
   border-radius: 5px;
   outline: none;
 }
@@ -70,4 +77,21 @@ button:hover {
   background: #1db954; /* Couleur Spotify */
   border-radius: 50%;
   cursor: pointer;
+}
+
+/* Animation du vinyle */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Cacher les boutons lorsqu'ils ne sont pas nécessaires */
+#buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
