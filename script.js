@@ -2,7 +2,7 @@ let accessToken = null;
 
 // Fonction pour rediriger vers Spotify pour se connecter
 function redirectToSpotify() {
-  const clientId = "TON_CLIENT_ID_SPOTIFY";
+  const clientId = "c3b94a096f0e4ca392978b6ee67d002c";
   const redirectUri = "https://maaar31.github.io/spotify-music-visualizer/";
   const scopes = "user-read-playback-state";
   const url = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}`;
